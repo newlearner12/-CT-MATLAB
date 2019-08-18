@@ -1,0 +1,18 @@
+function y = flfun(bt,x)
+d = bt(1);seta = bt(2);u=bt(3);t0=bt(4);n=x;
+t = t0+(n-1).*d;          
+b1 = 2*(225.*t.*sin(seta)*cos(seta)-1600.*t.*cos(seta)*sin(seta));
+a1 = 1600*sin(seta).^2 + 225*cos(seta).^2;
+c1 = 1600.*(t.*cos(seta)).^2 + 225.*(t.*sin(seta)).^2 - 360000;
+delta1 = b1.^2 - 4.*a1.*c1;
+L1 = zeros(512,1);
+dx1 = find(delta1 >= 0);
+L1(dx1) = sqrt(delta1(dx1))./a1;
+a2 = 1;
+b2 = 2.*t.*sin(seta)*cos(seta)-2*sin(seta).*(t*cos(seta)-45);
+c2 = (t*cos(seta)-45).^2 + (t*sin(seta)).^2 - 16;
+delta2 = b2.^2 - 4.*a2.*c2;
+L2 = zeros(512,1);
+dx2 = find(delta2 >=0);
+L2(dx2) = sqrt(delta2(dx2));
+y = u.*(L1+L2);

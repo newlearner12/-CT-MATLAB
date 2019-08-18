@@ -1,0 +1,29 @@
+B = xlsread('C:\Users\Lenovo\Desktop\sheet2.xlsx');
+[m,n] = size(B);
+X = 1:m;
+X = X';
+Y = B;
+bt0 = [8/29 0+0.1 1 -60];
+Theta = [];
+theta=[];
+S=[];
+for i = 1:180          %对每一组射线进行拟合
+    Y = B(:,i);
+    beta = nlinfit(X,Y,@flfun,bt0);
+    bt0 = beta;
+    S(i)=bt0(4);
+    theta(i)=bt0(2);
+    Theta(i) = bt0(2).*180./pi;
+end
+disp(Theta)
+d=bt0(1)
+x2=theta;   %180个角度
+y=S;
+w1=cos(x2);
+w2=sin(x2);
+X3=[ones(length(y),1) w1' w2'];
+Y=y';
+beta1=regress(Y,X3);
+Xc=beta1(2)
+Yc=beta1(3)
+dc=beta1(1)
